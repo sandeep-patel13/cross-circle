@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::view('play-game', 'gaming.index')->name('play-game');
 
+    Route::view('play-online','gaming.play-online.index')->name('play-online');
 });
 
 require __DIR__.'/auth.php';

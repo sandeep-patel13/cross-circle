@@ -19,6 +19,9 @@
                     <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-game') }}" wire:navigate>
                         {{ __('Play Game') }}
                     </flux:navlist.item>
+                    <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-online') }}" wire:navigate>
+                        {{ __('Play Online') }}
+                    </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
