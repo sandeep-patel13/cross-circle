@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Helpers\OnlineUserTracker;
-use App\Livewire\Actions\Logout;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 

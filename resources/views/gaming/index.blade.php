@@ -1,9 +1,9 @@
-<x-master-layout>
-    <x-slot name="mainSlot">
-        <livewire:cross-circle-master-livewire />
-    </x-slot>
+<x-layouts.app :title="__('Dashboard')">
 
-    <x-slot name="script">
+    <livewire:cross-circle-master-livewire />
+
+
+    <x-slot:script>
         <script>
             function goBack() {
                 window.location.href = "{{ route('play-game') }}";
@@ -11,4 +11,4 @@
         </script>
     </x-slot>
 
-</x-master-layout>
+</x-layouts.app>

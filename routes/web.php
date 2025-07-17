@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlayOnlineController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -20,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::view('play-game', 'gaming.index')->name('play-game');
 
-    Route::view('play-online','gaming.play-online.index')->name('play-online');
+    Route::get('play-online',[PlayOnlineController::class , 'index'])->name('play-online');
 });
 
 require __DIR__.'/auth.php';
