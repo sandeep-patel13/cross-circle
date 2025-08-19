@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\SendGamePlayInvitationEvent;
 use App\Http\Controllers\PlayOnlineController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -21,7 +22,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::view('play-game', 'gaming.index')->name('play-game');
 
-    Route::get('play-online',[PlayOnlineController::class , 'index'])->name('play-online');
+    Route::get('play-online', [PlayOnlineController::class, 'index'])->name('play-online');
+
+    Route::get('broadcast', function () {
+        broadcast(new SendGamePlayInvitationEvent());
+        return 'Event broadcasted';
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

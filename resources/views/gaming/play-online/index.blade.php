@@ -4,10 +4,11 @@
         <div class="max-w-sm rounded overflow-hidden shadow-lg relative bg-gray-800 text-white">
             <div class="relative">
                 <img class="mx-auto w-1/3" src="{{ $default_image }}" alt="User Image">
-                
+
                 <span class="absolute top-2 right-2">
                     <span class="flex h-3 w-3">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                     </span>
                 </span>
@@ -23,4 +24,14 @@
         </div>
     @endforeach
 
+    <x:slot name="script">
+        <script type="module">
+            document.addEventListener('DOMContentLoaded', () => {
+                Echo.channel('invite')
+                    .listen('.SendGamePlayInvitationEvent', (e) => {
+                        console.log('H');
+                    });
+            });
+        </script>
+    </x:slot>
 </x-layouts.app>
