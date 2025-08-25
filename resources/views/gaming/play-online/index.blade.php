@@ -25,12 +25,11 @@
     @endforeach
 
     <x:slot name="script">
-        <script type="module">
+        <script>
             document.addEventListener('DOMContentLoaded', () => {
-                Echo.channel('invite')
-                    .listen('.SendGamePlayInvitationEvent', (e) => {
-                        console.log('H');
-                    });
+                Echo.channel('invite').listen('.play-event', (e) => {
+                    console.log('H');
+                });
             });
         </script>
     </x:slot>

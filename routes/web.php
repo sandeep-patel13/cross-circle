@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('play-online', [PlayOnlineController::class, 'index'])->name('play-online');
 
     Route::get('broadcast', function () {
-        broadcast(new SendGamePlayInvitationEvent());
+        SendGamePlayInvitationEvent::dispatch();
         return 'Event broadcasted';
     });
 });

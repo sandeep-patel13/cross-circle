@@ -36,6 +36,6 @@ class SendGamePlayInvitationEvent implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'SendGamePlayInvitationEvent';
+        return 'play-event';
     }
 }
