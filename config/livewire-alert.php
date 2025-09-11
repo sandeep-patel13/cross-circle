@@ -8,9 +8,9 @@
 use Jantinnerezo\LivewireAlert\Enums\Position;
 
 return [
-    'position' => Position::Center,
+    'position' => Position::TopEnd,
     'timer' => null,
-    'toast' => false,
+    'toast' => true,
     'text' => null,
     'confirmButtonText' => 'Yes',
     'cancelButtonText' => 'Cancel',
