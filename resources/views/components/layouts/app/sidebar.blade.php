@@ -146,6 +146,22 @@
 
     {{ $slot }}
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Echo.private("invite.{{ auth()->user()->id }}")
+                .listen('.play-event', (e) => {
+                    Swal.fire({
+                        title: 'Game Invitation',
+                        text: `User ${e.fromUserName} invited you to play!`,
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Accept',
+                        cancelButtonText: 'Decline'
+                    });
+                });
+        });
+    </script>
+
     @fluxScripts
 </body>
 

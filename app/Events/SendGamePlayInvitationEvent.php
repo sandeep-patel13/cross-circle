@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,13 +15,16 @@ class SendGamePlayInvitationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    private $fromUserName;
     /**
      * Create a new event instance.
      */
     public function __construct(
         private $onlineUserId,
-        private $fromUserId
-    ) {}
+        private $fromUserId,
+    ) {
+        $this->fromUserName = User::find($fromUserId)->name;
+    }
 
     /**
      * Get the channels the event should broadcast on.
@@ -41,12 +45,9 @@ class SendGamePlayInvitationEvent implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        Log::info('broadcastWith() was called', [
-            'fromUserId' => $this->fromUserId,
-            'onlineUserId' => $this->onlineUserId,
-        ]);
         return [
             'fromUserId' => $this->fromUserId,
+            'fromUserName' => $this->fromUserName,
             'onlineUserId' => $this->onlineUserId,
         ];
     }

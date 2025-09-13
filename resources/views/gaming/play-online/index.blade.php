@@ -27,12 +27,6 @@
 
     <x:slot name="script">
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                Echo.private("invite.{{ auth()->user()->id }}")
-                    .listen('.play-event', (e) => {
-                        console.log("Got private event:", JSON.stringify(e));
-                    });
-            });
             $(document).on('click', '.play-btn', function() {
                 const userId = $(this).data('onlineuserid');
                 window.location.href = "{{ url('broadcast-play-event') }}/" + userId;
