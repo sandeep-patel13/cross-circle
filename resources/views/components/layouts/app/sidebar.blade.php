@@ -147,6 +147,24 @@
     {{ $slot }}
 
     <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-toast', (data) => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    title: 'Success!',
+                    text: data.message,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer);
+                        toast.addEventListener('mouseleave', Swal.resumeTimer);
+                    },
+                });
+            });
+        });
         document.addEventListener('DOMContentLoaded', () => {
             Echo.private("invite.{{ auth()->user()->id }}")
                 .listen('.play-event', (e) => {

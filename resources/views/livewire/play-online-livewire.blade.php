@@ -1,5 +1,4 @@
-<x-layouts.app :title="__('Dashboard')">
-
+<div>
     @foreach ($onlineUsers as $onlineUser)
         <div class="max-w-sm rounded overflow-hidden shadow-lg relative bg-gray-800 text-white">
             <div class="relative">
@@ -19,18 +18,11 @@
             </div>
 
             <div class="px-6 pt-4 pb-2">
-                <flux:button class="cursor-pointer play-btn" variant="primary"
-                    data-onlineUserId="{{ $onlineUser->id }}">Play</flux:button>
+                <flux:button wire:click="sendGamePlayInvitation('{{ $onlineUser->id }}')" class="cursor-pointer play-btn"
+                    variant="primary">
+                    Play
+                </flux:button>
             </div>
         </div>
     @endforeach
-
-    <x:slot name="script">
-        <script>
-            $(document).on('click', '.play-btn', function() {
-                const userId = $(this).data('onlineuserid');
-                window.location.href = "{{ url('broadcast-play-event') }}/" + userId;
-            });
-        </script>
-    </x:slot>
-</x-layouts.app>
+</div>
