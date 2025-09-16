@@ -165,16 +165,43 @@
                 });
             });
         });
+
         document.addEventListener('DOMContentLoaded', () => {
             Echo.private("invite.{{ auth()->user()->id }}")
                 .listen('.play-event', (e) => {
                     Swal.fire({
                         title: 'Game Invitation',
-                        text: `User ${e.fromUserName} invited you to play!`,
+                        text: `User ${e.fromUserName} challanged you to play!`,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonText: 'Accept',
                         cancelButtonText: 'Decline'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Livewire.dispatch('game-play-invitation-accepted', {
+                                gameSessionId: e.gameSession.id
+                            });
+                        } else {
+                            Livewire.dispatch('game-play-invitation-rejected', {
+                                gameSessionId: e.gameSession.id
+                            });
+                        }
+                    });
+                })
+                .listen('.invitation-accepted', (e) => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        title: 'Success!',
+                        text: `User ${e.invitee_name} accepted your invitation!`,
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        },
                     });
                 });
         });

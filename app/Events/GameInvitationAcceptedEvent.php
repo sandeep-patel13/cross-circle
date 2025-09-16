@@ -3,28 +3,28 @@
 namespace App\Events;
 
 use App\Models\GameSession;
-use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Log;
 
-class SendGamePlayInvitationEvent implements ShouldBroadcast
+class GameInvitationAcceptedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $fromUserName;
+    public $gameSessionId;
+
     /**
      * Create a new event instance.
      */
-    public function __construct(
-        private $onlineUserId,
-        private $fromUserId,
-        private $gameSessionId
-    ) {
-        $this->fromUserName = User::find($fromUserId)->name;
+    public function __construct($gameSessionId)
+    {
+        $this->gameSessionId = $gameSessionId;
+        Log::info("GameInvitationAcceptedEvent __construct called with: ".$gameSessionId);
     }
 
     /**
@@ -34,24 +34,21 @@ class SendGamePlayInvitationEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
+        $inviter_id = GameSession::find($this->gameSessionId)->inviter->id;
         return [
-            new PrivateChannel("invite.{$this->onlineUserId}")
+            new PrivateChannel("invite.{$inviter_id}"),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'play-event';
+        return 'invitation-accepted';
     }
 
-    public function broadcastWith(): array
+    public function broadcastWith()
     {
         return [
-            'fromUserId' => $this->fromUserId,
-            'fromUserName' => $this->fromUserName,
-            'onlineUserId' => $this->onlineUserId,
-            'gameSession' => GameSession::find($this->gameSessionId)
+            'invitee_name' => GameSession::find($this->gameSessionId)->invitee->name
         ];
     }
-
 }
