@@ -192,9 +192,25 @@
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
-                        title: 'Success!',
+                        title: 'Invitation Accepted!',
                         text: `User ${e.invitee_name} accepted your invitation!`,
                         icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        },
+                    });
+                })
+                .listen('.invitation-rejected', (e) => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        title: 'Invitation Rejected!',
+                        text: `User ${e.invitee_name} rejected your invitation!`,
+                        icon: 'warning',
                         showConfirmButton: false,
                         timer: 3000,
                         timerProgressBar: true,

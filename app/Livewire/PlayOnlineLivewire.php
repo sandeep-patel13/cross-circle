@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Enums\GameSessionStatusEnum;
 use App\Events\GameInvitationAcceptedEvent;
+use App\Events\GameInvitationRejectedEvent;
 use App\Events\SendGamePlayInvitationEvent;
 use App\GameStatus;
 use App\Helpers\OnlineUserTracker;
@@ -49,6 +50,15 @@ class PlayOnlineLivewire extends Component
             'started_at' => now()
         ]);
         GameInvitationAcceptedEvent::dispatch($gameSessionId);
+    }
+
+    public function gamePlayInvitationRejected($gameSessionId)
+    {
+        $gameSession = GameSession::findOrFail($gameSessionId);
+        $gameSession->update([
+            'status' => GameSessionStatusEnum::Cancelled->value,
+        ]);
+        GameInvitationRejectedEvent::dispatch($gameSessionId);
     }
 
     public function render()
