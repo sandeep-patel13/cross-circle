@@ -6,16 +6,15 @@ use App\Enums\GameSessionStatusEnum;
 use App\Events\GameInvitationAcceptedEvent;
 use App\Events\GameInvitationRejectedEvent;
 use App\Events\SendGamePlayInvitationEvent;
-use App\GameStatus;
 use App\Helpers\OnlineUserTracker;
 use App\Models\GameSession;
 use Livewire\Component;
-use Log;
 use Storage;
 
 class PlayOnlineLivewire extends Component
 {
     public $defaultImage;
+
     public $onlineUsers;
 
     public $listeners = [
@@ -36,9 +35,10 @@ class PlayOnlineLivewire extends Component
             'invitee_id' => $onlineUserId,
             'status' => GameSessionStatusEnum::Pending->value,
         ]);
-        SendGamePlayInvitationEvent::dispatch($onlineUserId, auth()->user()->id, $gameSession->id);
+        $gameSession = $gameSession->load('inviter', 'invitee');
+        SendGamePlayInvitationEvent::dispatch($gameSession);
         $this->dispatch('show-toast', [
-            'message' => 'Game play invitation sent successfully'
+            'message' => 'Game play invitation sent successfully',
         ]);
     }
 
@@ -47,18 +47,20 @@ class PlayOnlineLivewire extends Component
         $gameSession = GameSession::findOrFail($gameSessionId);
         $gameSession->update([
             'status' => GameSessionStatusEnum::Active->value,
-            'started_at' => now()
+            'started_at' => now(),
         ]);
-        GameInvitationAcceptedEvent::dispatch($gameSessionId);
+        $gameSession->refresh();
+        GameInvitationAcceptedEvent::dispatch($gameSession);
     }
 
     public function gamePlayInvitationRejected($gameSessionId)
     {
-        $gameSession = GameSession::findOrFail($gameSessionId);
+        $gameSession = GameSession::with('inviter', 'invitee')->findOrFail($gameSessionId);
         $gameSession->update([
             'status' => GameSessionStatusEnum::Cancelled->value,
         ]);
-        GameInvitationRejectedEvent::dispatch($gameSessionId);
+        $gameSession->refresh();
+        GameInvitationRejectedEvent::dispatch($gameSession);
     }
 
     public function render()

@@ -3,28 +3,22 @@
 namespace App\Events;
 
 use App\Models\GameSession;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Log;
 
 class GameInvitationAcceptedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $gameSessionId;
-
     /**
      * Create a new event instance.
      */
-    public function __construct($gameSessionId)
+    public function __construct(private GameSession $gameSession)
     {
-        $this->gameSessionId = $gameSessionId;
-        Log::info("GameInvitationAcceptedEvent __construct called with: ".$gameSessionId);
+        $this->gameSession->load('inviter', 'invitee');
     }
 
     /**
@@ -34,9 +28,8 @@ class GameInvitationAcceptedEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        $inviter_id = GameSession::find($this->gameSessionId)->inviter->id;
         return [
-            new PrivateChannel("invite.{$inviter_id}"),
+            new PrivateChannel("invite.{$this->gameSession->inviter_id}"),
         ];
     }
 
@@ -48,7 +41,7 @@ class GameInvitationAcceptedEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'invitee_name' => GameSession::find($this->gameSessionId)->invitee->name
+            'invitee_name' => $this->gameSession->invitee->name,
         ];
     }
 }

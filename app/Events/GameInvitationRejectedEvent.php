@@ -3,9 +3,7 @@
 namespace App\Events;
 
 use App\Models\GameSession;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,14 +14,14 @@ class GameInvitationRejectedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $gameSessionId;
+    public GameSession $gameSession;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($gameSessionId)
+    public function __construct(GameSession $gameSession)
     {
-        $this->gameSessionId = $gameSessionId;
+        $this->gameSession = $gameSession;
     }
 
     /**
@@ -33,9 +31,9 @@ class GameInvitationRejectedEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        $inviter_id = GameSession::find($this->gameSessionId)->inviter->id;
+        // The relationship is already loaded, so no need for an extra query.
         return [
-            new PrivateChannel("invite.{$inviter_id}"),
+            new PrivateChannel("invite.{$this->gameSession->inviter_id}"),
         ];
     }
 
@@ -47,7 +45,7 @@ class GameInvitationRejectedEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'invitee_name' => GameSession::find($this->gameSessionId)->invitee->name
+            'invitee_name' => $this->gameSession->invitee->name,
         ];
     }
 }
