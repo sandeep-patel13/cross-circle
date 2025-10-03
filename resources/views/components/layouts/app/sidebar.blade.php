@@ -193,7 +193,7 @@
                         toast: true,
                         position: 'top-end',
                         title: 'Invitation Accepted!',
-                        text: `User ${e.invitee_name} accepted your invitation!`,
+                        text: `User ${e.gameSession.invitee.name} accepted your invitation!`,
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 3000,
@@ -202,6 +202,10 @@
                             toast.addEventListener('mouseenter', Swal.stopTimer);
                             toast.addEventListener('mouseleave', Swal.resumeTimer);
                         },
+                    })
+                    .then(() => {
+                        console.log(e);
+                        window.location.href = "{{ url('request-accepted') }}/" + e.gameSession.id;
                     });
                 })
                 .listen('.invitation-rejected', (e) => {

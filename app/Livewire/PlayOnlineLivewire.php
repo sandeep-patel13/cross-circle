@@ -51,6 +51,10 @@ class PlayOnlineLivewire extends Component
         ]);
         $gameSession->refresh();
         GameInvitationAcceptedEvent::dispatch($gameSession);
+
+        return redirect()->route('request-accpeted', [
+            'gameSessionId' => $gameSessionId,
+        ]);
     }
 
     public function gamePlayInvitationRejected($gameSessionId)

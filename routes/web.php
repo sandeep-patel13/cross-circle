@@ -3,6 +3,7 @@
 use App\Events\SendGamePlayInvitationEvent;
 use App\Http\Controllers\PlayOnlineController;
 use App\Livewire\PlayOnlineLivewire;
+use App\Livewire\TwoUserGamePlay;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -24,6 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::view('play-game', 'gaming.index')->name('play-game');
 
     Route::get('play-online', PlayOnlineLivewire::class)->name('play-online');
+
+    Route::get('request-accepted/{gameSessionId}', TwoUserGamePlay::class)->name('request-accpeted');
 });
 
 require __DIR__ . '/auth.php';

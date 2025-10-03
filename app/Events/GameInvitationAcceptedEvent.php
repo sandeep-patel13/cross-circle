@@ -41,7 +41,7 @@ class GameInvitationAcceptedEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'invitee_name' => $this->gameSession->invitee->name,
+            'gameSession' => $this->gameSession,
         ];
     }
 }
