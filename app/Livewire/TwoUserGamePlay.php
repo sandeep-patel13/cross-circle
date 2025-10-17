@@ -19,7 +19,7 @@ class TwoUserGamePlay extends Component
 
     public $userSymbol;
 
-    public $timer = 5;
+    public $timer = 15;
 
     public $timeUpAlertShown = false;
 
