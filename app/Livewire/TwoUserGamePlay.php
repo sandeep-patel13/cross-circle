@@ -19,13 +19,18 @@ class TwoUserGamePlay extends Component
 
     public $userSymbol;
 
-    public $timer = 30;
+    public $timer = 5;
 
     public $timeUpAlertShown = false;
 
     public $userTurn;
 
     public $gameCompleted = false;
+
+    public function render()
+    {
+        return view('livewire.two-user-game-play');
+    }
 
     public function mount($gameSessionId)
     {
@@ -105,9 +110,8 @@ class TwoUserGamePlay extends Component
     {
         $this->gameBoard = array_fill(0, 3, array_fill(0, 3, $this->userSymbol));
     }
-
-    public function render()
+    public function goBack()
     {
-        return view('livewire.two-user-game-play');
+        return redirect()->route('play-online');
     }
 }
