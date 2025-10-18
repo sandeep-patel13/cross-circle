@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\GameSessionStatusEnum;
+use App\Events\GameMoveUpdationEvent;
 use App\Models\GameSession;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
@@ -27,6 +28,8 @@ class TwoUserGamePlay extends Component
 
     public $gameCompleted = false;
 
+    public $movedCells;
+
     public function render()
     {
         return view('livewire.two-user-game-play');
@@ -50,6 +53,9 @@ class TwoUserGamePlay extends Component
 
         // Initialize the game board
         $this->initializeGameBoard();
+
+        // Initialize disabled cells
+        $this->movedCells = collect();
     }
 
     public function handleTimeUp()
@@ -102,7 +108,7 @@ class TwoUserGamePlay extends Component
         if ($this->timer > 0) {
             $this->timer--;
         } elseif (! $this->timeUpAlertShown) {
-            $this->handleTimeUp();
+            // $this->handleTimeUp();
         }
     }
 
@@ -110,8 +116,25 @@ class TwoUserGamePlay extends Component
     {
         $this->gameBoard = array_fill(0, 3, array_fill(0, 3, $this->userSymbol));
     }
+
     public function goBack()
     {
         return redirect()->route('play-online');
     }
+
+    public function handleMove($row, $column, $move)
+    {
+        // Since user has selected, make it disable
+        $this->movedCells->put(
+            "{$row}-{$column}",
+            $move
+        );
+        // Update the user turn
+        $this->userTurn = $this->userTurn == $this->gameSession->inviter_id
+            ? $this->gameSession->invitee_id
+            : $this->gameSession->inviter_id;
+        // Now fire the event to notify the opponent about the move
+        GameMoveUpdationEvent::dispatch($this->movedCells, $this->userTurn);
+    }
+
 }

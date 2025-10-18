@@ -1,6 +1,24 @@
-<div wire:poll.1s="checkGameStatus">
+<div x-data=""
+    x-init=
+    "
+        Echo.private('game-move-update.{{ auth()->id() }}')
+        .listen('.game-move-update', (e) => {
+            let countdownSection = $('#countdownSection');
+            let gameBoardSection = $('#gameBoardSection');
+            countdownSection.removeClass('opacity-50 pointer-events-none');
+            gameBoardSection.removeClass('opacity-50 pointer-events-none');
+            $('.symbol-buttons').each(function() {
+                if ($(this).attr('id') === `${e.moveCells.x}-${e.moveCells.y}`) {
+                    $(this).text(e.userSymbol);
+                }
+            });
+        });
+
+    "
+    wire:poll.1s="checkGameStatus">
     <!-- Countdown Section -->
-    <div class="w-64 mx-auto p-4 rounded-xl text-center font-bold 
+    <div id="countdownSection"
+        class="w-64 mx-auto p-4 rounded-xl text-center font-bold 
                bg-gradient-to-br from-gray-900 to-gray-800 
                border-2 border-red-600 text-red-400
                shadow-[0_0_15px_rgba(239,68,68,0.6)] 
@@ -13,8 +31,7 @@
     </div>
 
     <!-- Game Board Section -->
-    <div
-        class="flex flex-col items-center justify-start min-h-screen mt-16 text-white">
+    <div id="gameBoardSection" class="flex flex-col items-center justify-start min-h-screen mt-16 text-white">
         <h1
             class="text-4xl font-extrabold mb-6 text-cyan-400 
                    drop-shadow-[0_0_10px_rgba(6,182,212,0.8)] tracking-wider">
@@ -27,14 +44,15 @@
                    bg-gradient-to-br from-gray-800 to-gray-900 
                    shadow-[0_0_20px_rgba(6,182,212,0.3)]
                    {{ auth()->id() != $userTurn || $gameCompleted ? 'opacity-50 pointer-events-none' : '' }}">
-            @foreach ($gameBoard as $row)
-                @foreach ($row as $cell)
-                    <button
-                        class="w-24 h-24 text-5xl font-extrabold rounded-xl 
+            @foreach ($gameBoard as $x => $row)
+                @foreach ($row as $y => $cell)
+                    <button id="{{ '{$x}-{$y}' }}"
+                        class="symbol-buttons w-24 h-24 text-5xl font-extrabold rounded-xl 
                                bg-gray-900 border-2 border-cyan-500 text-cyan-400 
                                hover:bg-cyan-500 hover:text-black hover:scale-105 
                                transition-all duration-200 ease-in-out 
-                               shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none">
+                               shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none"
+                        wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ $userSymbol }}')">
                         {{ $userSymbol }}
                     </button>
                 @endforeach
@@ -48,5 +66,4 @@
             </div>
         @endif
     </div>
-
 </div>
