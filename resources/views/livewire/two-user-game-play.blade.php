@@ -7,11 +7,13 @@
             let gameBoardSection = $('#gameBoardSection');
             countdownSection.removeClass('opacity-50 pointer-events-none');
             gameBoardSection.removeClass('opacity-50 pointer-events-none');
+            {{-- console.log(countdownSection);
             $('.symbol-buttons').each(function() {
-                if ($(this).attr('id') === `${e.moveCells.x}-${e.moveCells.y}`) {
-                    $(this).text(e.userSymbol);
+                if ($(this).attr('id') === `${e.moveCells.cordinate}`) {
+                    $(this).text(e.moveCells.symbol);
+                    $(this).addClass('pointer-events-none opacity-50');
                 }
-            });
+            }); --}}
         });
 
     "
@@ -23,9 +25,9 @@
                border-2 border-red-600 text-red-400
                shadow-[0_0_15px_rgba(239,68,68,0.6)] 
                drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]
-               {{ auth()->id() != $userTurn ? 'opacity-50 pointer-events-none' : '' }}
+               {{ auth()->id() != $gameSession->current_user_turn_id ? 'opacity-50 pointer-events-none' : '' }}
                {{ $gameCompleted ? 'opacity-60 select-none' : '' }}"
-        @if (auth()->id() == $userTurn && !$gameCompleted) wire:poll.1000ms="decrementTimer" @endif>
+        @if (auth()->id() == $gameSession->current_user_turn_id && !$gameCompleted) wire:poll.1000ms="decrementTimer" @endif>
         <div class="text-lg tracking-wide uppercase">⏳ Countdown</div>
         <div class="text-3xl mt-1 font-extrabold">{{ $timer }}</div>
     </div>
@@ -43,17 +45,17 @@
             class="grid grid-cols-3 gap-3 p-4 rounded-2xl 
                    bg-gradient-to-br from-gray-800 to-gray-900 
                    shadow-[0_0_20px_rgba(6,182,212,0.3)]
-                   {{ auth()->id() != $userTurn || $gameCompleted ? 'opacity-50 pointer-events-none' : '' }}">
+                   {{ auth()->id() != $gameSession->current_user_turn_id || $gameCompleted ? 'opacity-50 pointer-events-none' : '' }}">
             @foreach ($gameBoard as $x => $row)
                 @foreach ($row as $y => $cell)
-                    <button id="{{ '{$x}-{$y}' }}"
+                    <button id="{{ "{$x}-{$y}" }}"
                         class="symbol-buttons w-24 h-24 text-5xl font-extrabold rounded-xl 
                                bg-gray-900 border-2 border-cyan-500 text-cyan-400 
                                hover:bg-cyan-500 hover:text-black hover:scale-105 
                                transition-all duration-200 ease-in-out 
                                shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none"
-                        wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ $userSymbol }}')">
-                        {{ $userSymbol }}
+                        wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ $cell }}')">
+                        {{ $cell }}
                     </button>
                 @endforeach
             @endforeach

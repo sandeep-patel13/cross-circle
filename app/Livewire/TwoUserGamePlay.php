@@ -7,6 +7,7 @@ use App\Events\GameMoveUpdationEvent;
 use App\Models\GameSession;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
+use Log;
 
 class TwoUserGamePlay extends Component
 {
@@ -23,8 +24,6 @@ class TwoUserGamePlay extends Component
     public $timer = 15;
 
     public $timeUpAlertShown = false;
-
-    public $userTurn;
 
     public $gameCompleted = false;
 
@@ -43,7 +42,14 @@ class TwoUserGamePlay extends Component
         // Set player symbols
         $this->inviterSymbol = 'X';
         $this->inviteeSymbol = 'O';
-        $this->userTurn = $this->gameSession->inviter_id;
+
+        // Set current user turn
+        $this->gameSession->update([
+            'current_user_turn_id' => $this->gameSession->inviter_id,
+        ]);
+
+        // Refresh game session
+        $this->gameSession->refresh();
 
         if (auth()->id() == $this->gameSession->inviter_id) {
             $this->userSymbol = $this->inviterSymbol;
@@ -103,6 +109,13 @@ class TwoUserGamePlay extends Component
         }
     }
 
+    public function printGameBoard()
+    {
+        foreach ($this->gameBoard as $row) {
+            Log::info(implode(' | ', $row));
+        }
+    }
+
     public function decrementTimer()
     {
         if ($this->timer > 0) {
@@ -126,15 +139,31 @@ class TwoUserGamePlay extends Component
     {
         // Since user has selected, make it disable
         $this->movedCells->put(
-            "{$row}-{$column}",
-            $move
+            'cordinate', "{$row}-{$column}",
         );
-        // Update the user turn
-        $this->userTurn = $this->userTurn == $this->gameSession->inviter_id
+        $this->movedCells->put(
+            'symbol', $move,
+        );
+
+        // Get current user turn id
+        $current_user_turn_id = $this->gameSession->current_user_turn_id == $this->gameSession->inviter_id
             ? $this->gameSession->invitee_id
             : $this->gameSession->inviter_id;
-        // Now fire the event to notify the opponent about the move
-        GameMoveUpdationEvent::dispatch($this->movedCells, $this->userTurn);
-    }
 
+        // Update the current user turn
+        $this->gameSession->update([
+            'current_user_turn_id' => $current_user_turn_id,
+        ]);
+
+        // Refresh game session
+        $this->gameSession->refresh();
+
+        // Update the game board
+        $this->gameBoard[$row][$column] = $move;
+
+        $this->printGameBoard();
+
+        // Now fire the event to notify the opponent about the move
+        GameMoveUpdationEvent::dispatch($this->movedCells, $this->gameSession->current_user_turn_id);
+    }
 }

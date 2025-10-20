@@ -9,6 +9,7 @@ class GameSession extends Model
     protected $fillable = [
         'inviter_id',
         'invitee_id',
+        'current_user_turn_id',
         'status',
         'started_at',
         'ended_at',
