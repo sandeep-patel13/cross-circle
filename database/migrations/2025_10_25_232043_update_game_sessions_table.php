@@ -12,12 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('game_sessions', function (Blueprint $table) {
-            $table->foreignId('current_user_turn_id')->nullable()->after('invitee_id')->constrained('users')->onDelete('cascade');
-            $table->json('game_board')->default(json_encode([
-                ['', '', ''],
-                ['', '', ''],
-                ['', '', ''],
-            ]))->after('current_user_turn_id')->nullable();
+            $table->boolean('game_won_by_timeout')->after('status')->default(false);
+            $table->foreignId('loser_id')->after('winner_id')->nullable()->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -27,9 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('game_sessions', function (Blueprint $table) {
-            $table->dropForeign(['current_user_turn_id']);
-            $table->dropColumn('current_user_turn_id');
-            $table->dropColumn('game_board');
+            $table->dropForeign(['loser_id']);
+            $table->dropColumn(['game_won_by_timeout', 'loser_id']);
         });
     }
 };

@@ -10,10 +10,16 @@ class GameSession extends Model
         'inviter_id',
         'invitee_id',
         'current_user_turn_id',
+        'game_board',
         'status',
         'started_at',
         'ended_at',
-        'winner_id'
+        'winner_id',
+        'loser_id',
+    ];
+
+    public $casts = [
+        'game_board' => 'array',
     ];
 
     public function inviter()

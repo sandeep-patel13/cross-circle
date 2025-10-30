@@ -53,9 +53,10 @@
                                bg-gray-900 border-2 border-cyan-500 text-cyan-400 
                                hover:bg-cyan-500 hover:text-black hover:scale-105 
                                transition-all duration-200 ease-in-out 
-                               shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none"
-                        wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ $cell }}')">
-                        {{ $cell }}
+                               shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none
+                               {{ strlen($gameSession->game_board[$x][$y]) > 0 ? 'pointer-events-none opacity-50' : '' }}"
+                        wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}')">
+                       {{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}
                     </button>
                 @endforeach
             @endforeach
