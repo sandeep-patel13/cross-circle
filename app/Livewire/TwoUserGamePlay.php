@@ -27,6 +27,8 @@ class TwoUserGamePlay extends Component
 
     public $winingAlertShown = false;
 
+    public $gameSessionStatusEnum;
+
     public function render()
     {
         return view('livewire.two-user-game-play');
@@ -62,16 +64,15 @@ class TwoUserGamePlay extends Component
         $this->movedCells = collect();
 
         // Clear session variables
-        session()->forget('gameCompleted');
         session()->forget('wonByTimeout');
         session()->forget('lostButNotByTimeout');
+
+        // Set game session status enum
+        $this->gameSessionStatusEnum = GameSessionStatusEnum::class;
     }
 
     public function handleTimeUp()
     {
-
-        session()->put('gameCompleted', true);
-
         // Current user is the loser, his time is up
         $loserId = auth()->id();
         // Get the winner user
@@ -118,12 +119,6 @@ class TwoUserGamePlay extends Component
             return;
         }
 
-        Log::info('Checking game status for user id: ', [
-            'user_id' => auth()->id(),
-            'loser_id' => $this->gameSession->loser_id,
-            'game_won_by_timeout' => $this->gameSession->game_won_by_timeout,
-            'lostButNotByTimeoutSession' => session('lostButNotByTimeout'),
-        ]);
         // If current user is looser but not by timeout
         if (auth()->id() == $this->gameSession->loser_id && $this->gameSession->game_won_by_timeout == false && ! session('lostButNotByTimeout')) {
             LivewireAlert::title('You Lost!')
@@ -147,6 +142,7 @@ class TwoUserGamePlay extends Component
 
     public function decrementTimer()
     {
+        Log::info("Timer before decrement: {$this->timer}");
         if ($this->timer > 0) {
             $this->timer--;
         } else {
@@ -204,7 +200,6 @@ class TwoUserGamePlay extends Component
         }
 
         if ($horizontalWin == 3 || $verticalWin == 3 || $diagonalWin1 == 3 || $diagonalWin2 == 3) {
-            session()->put('gameCompleted', true);
             // Current user is the winner
             $winnerId = auth()->id();
             // Get the loser user
@@ -253,6 +248,7 @@ class TwoUserGamePlay extends Component
 
         // Reset the timer
         $this->timer = 25;
+        Log::info($this->timer);
 
         // Now fire the event to notify the opponent about the move
         GameMoveUpdationEvent::dispatch($this->movedCells, $this->gameSession->current_user_turn_id);

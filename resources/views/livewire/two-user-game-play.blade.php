@@ -18,7 +18,6 @@
 
     "
     wire:poll.1s="checkGameStatus">
-    
     <!-- Countdown Section -->
     <div id="countdownSection"
         class="w-64 mx-auto p-4 rounded-xl text-center font-bold 
@@ -27,8 +26,8 @@
                shadow-[0_0_15px_rgba(239,68,68,0.6)] 
                drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]
                {{ auth()->id() != $gameSession->current_user_turn_id ? 'opacity-50 pointer-events-none' : '' }}
-               {{ session('gameCompleted') ? 'opacity-60 select-none' : '' }}"
-        @if (auth()->id() == $gameSession->current_user_turn_id && !session('gameCompleted')) wire:poll.1000ms="decrementTimer" @endif>
+               {{ $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-60 select-none' : '' }}"
+        @if (auth()->id() == $gameSession->current_user_turn_id && !($this->gameSession->status == $this->gameSessionStatusEnum::Completed->value)) wire:poll.1000ms="decrementTimer" @endif>
         <div class="text-lg tracking-wide uppercase">⏳ Countdown</div>
         <div class="text-3xl mt-1 font-extrabold">{{ $timer }}</div>
     </div>
@@ -46,7 +45,7 @@
             class="grid grid-cols-3 gap-3 p-4 rounded-2xl 
                    bg-gradient-to-br from-gray-800 to-gray-900 
                    shadow-[0_0_20px_rgba(6,182,212,0.3)]
-                   {{ auth()->id() != $gameSession->current_user_turn_id || session('gameCompleted') ? 'opacity-50 pointer-events-none' : '' }}">
+                   {{ auth()->id() != $gameSession->current_user_turn_id || $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-50 pointer-events-none' : '' }}">
             @foreach ($gameBoard as $x => $row)
                 @foreach ($row as $y => $cell)
                     <button id="{{ "{$x}-{$y}" }}"
@@ -64,7 +63,7 @@
         </div>
 
         <!-- Go Back Button -->
-        @if (session('gameCompleted'))
+        @if ($this->gameSession->status == $this->gameSessionStatusEnum::Completed->value)
             <div class="mt-6 text-center">
                 <flux:button wire:click="goBack()" variant="primary">Go Back</flux:button>
             </div>
