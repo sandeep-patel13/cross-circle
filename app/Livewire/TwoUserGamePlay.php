@@ -23,10 +23,6 @@ class TwoUserGamePlay extends Component
 
     public $timer = 25;
 
-    public $timeUpAlertShown = false;
-
-    public $gameCompleted = false;
-
     public $movedCells;
 
     public $winingAlertShown = false;
@@ -64,13 +60,17 @@ class TwoUserGamePlay extends Component
 
         // Initialize disabled cells
         $this->movedCells = collect();
+
+        // Clear session variables
+        session()->forget('gameCompleted');
+        session()->forget('wonByTimeout');
+        session()->forget('lostButNotByTimeout');
     }
 
     public function handleTimeUp()
     {
-        $this->timeUpAlertShown = true;
 
-        $this->gameCompleted = true;
+        session()->put('gameCompleted', true);
 
         // Current user is the loser, his time is up
         $loserId = auth()->id();
@@ -80,7 +80,10 @@ class TwoUserGamePlay extends Component
         $this->gameSession->update([
             'status' => GameSessionStatusEnum::Completed->value,
             'winner_id' => $winnerId,
+            'game_won_by_timeout' => true,
         ]);
+
+        $this->gameSession->refresh();
 
         LivewireAlert::title('Time Up!')
             ->text('You lost this game, better luck next time!')
@@ -93,50 +96,46 @@ class TwoUserGamePlay extends Component
 
     public function checkGameStatus()
     {
+        // don't process if game is not completed
+        if ($this->gameSession->status != GameSessionStatusEnum::Completed->value) {
+            return;
+        }
+
         // Refresh model
         $this->gameSession->refresh();
-        // Handle game compeletion
-        if (! $this->timeUpAlertShown && $this->gameCompleted && $this->gameSession->status == GameSessionStatusEnum::Completed->value) {
-            // If current user is winner
-            if (auth()->id() == $this->gameSession->winner_id) {
 
-                // If user won by timeout
-                if ($this->gameSession->game_won_by_timeout) {
-                    LivewireAlert::title('You Won!')
-                        ->text('Congratulations 🎉, you won this match by the time')
-                        ->success()
-                        ->toast()
-                        ->position('top-end')
-                        ->show();
-                    $this->timer = 0;
-                }
-
-            }
-            $this->timeUpAlertShown = true;
+        // If current user is winner & won by timeout
+        if (auth()->id() == $this->gameSession->winner_id && $this->gameSession->game_won_by_timeout && ! session('wonByTimeout')) {
+            LivewireAlert::title('You Won!')
+                ->text('Congratulations 🎉, you won this match by the time')
+                ->success()
+                ->toast()
+                ->position('top-end')
+                ->show();
+            $this->timer = 0;
+            session()->put('wonByTimeout', true);
 
             return;
         }
 
-        if (! $this->winingAlertShown && $this->gameCompleted && $this->gameSession->status == GameSessionStatusEnum::Completed->value) {
-            // If current user is looser
-
-            if (auth()->id() == $this->gameSession->loser_id) {
-
-                // If user loss this match
-                if ($this->gameSession->game_won_by_timeout == false) {
-                    LivewireAlert::title('You Lost!')
-                        ->text('Dear user, you lost the game 😢')
-                        ->error()
-                        ->toast()
-                        ->position('top-end')
-                        ->show();
-                }
-
-            }
-            $this->winingAlertShown = true;
-
+        Log::info('Checking game status for user id: ', [
+            'user_id' => auth()->id(),
+            'loser_id' => $this->gameSession->loser_id,
+            'game_won_by_timeout' => $this->gameSession->game_won_by_timeout,
+            'lostButNotByTimeoutSession' => session('lostButNotByTimeout'),
+        ]);
+        // If current user is looser but not by timeout
+        if (auth()->id() == $this->gameSession->loser_id && $this->gameSession->game_won_by_timeout == false && ! session('lostButNotByTimeout')) {
+            LivewireAlert::title('You Lost!')
+                ->text('Dear user, you lost the game 😢')
+                ->error()
+                ->toast()
+                ->position('top-end')
+                ->show();
+            session()->put('lostButNotByTimeout', true);
             return;
         }
+
     }
 
     public function printGameBoard()
@@ -150,7 +149,7 @@ class TwoUserGamePlay extends Component
     {
         if ($this->timer > 0) {
             $this->timer--;
-        } elseif (! $this->timeUpAlertShown) {
+        } else {
             $this->handleTimeUp();
         }
     }
@@ -205,7 +204,7 @@ class TwoUserGamePlay extends Component
         }
 
         if ($horizontalWin == 3 || $verticalWin == 3 || $diagonalWin1 == 3 || $diagonalWin2 == 3) {
-            $this->gameCompleted = true;
+            session()->put('gameCompleted', true);
             // Current user is the winner
             $winnerId = auth()->id();
             // Get the loser user
@@ -216,6 +215,7 @@ class TwoUserGamePlay extends Component
                 'winner_id' => $winnerId,
                 'loser_id' => $loserId,
             ]);
+
             return true;
         }
 

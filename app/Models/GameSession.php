@@ -16,6 +16,7 @@ class GameSession extends Model
         'ended_at',
         'winner_id',
         'loser_id',
+        'game_won_by_timeout',
     ];
 
     public $casts = [
