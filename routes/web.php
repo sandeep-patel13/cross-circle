@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('play-online', PlayOnlineLivewire::class)->name('play-online');
 
+    Route::get('games-report', PlayOnlineLivewire::class)->name('games-report');
+
     Route::get('request-accepted/{gameSessionId}', TwoUserGamePlay::class)->name('request-accpeted');
 });
 

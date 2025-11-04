@@ -38,6 +38,9 @@
                 <flux:navlist.item class="mt-3" icon="bolt" href="{{ route('play-online') }}" wire:navigate>
                     {{ __('Play Online') }}
                 </flux:navlist.item>
+                <flux:navlist.item class="mt-3" icon="clipboard-document-check" href="{{ route('games-report') }}" wire:navigate>
+                    {{ __('Games Report') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
