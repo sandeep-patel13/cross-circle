@@ -32,4 +32,33 @@ class GameSession extends Model
     {
         return $this->belongsTo(User::class, 'invitee_id', 'id');
     }
+
+    public function winner()
+    {
+        return $this->belongsTo(User::class, 'winner_id', 'id');
+    }
+
+    public function looser()
+    {
+        return $this->belongsTo(User::class, 'loser_id', 'id');
+    }
+
+    public function scopeAllGameSession($query, $user_master_id)
+    {
+        return $this->where('inviter_id', $user_master_id)
+            ->orWhere('invitee_id', $user_master_id);
+    }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        if (empty($searchTerm)) {
+            return $query;
+        }
+
+        return $query->whereHas('inviter', function ($q) use ($searchTerm) {
+            $q->where('name', 'like', '%'.$searchTerm.'%');
+        })->orWhereHas('invitee', function ($q) use ($searchTerm) {
+            $q->where('name', 'like', '%'.$searchTerm.'%');
+        });
+    }
 }

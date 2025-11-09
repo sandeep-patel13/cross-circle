@@ -2,6 +2,7 @@
 
 use App\Events\SendGamePlayInvitationEvent;
 use App\Http\Controllers\PlayOnlineController;
+use App\Livewire\GameSessionTableLivewire;
 use App\Livewire\PlayOnlineLivewire;
 use App\Livewire\TwoUserGamePlay;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('play-online', PlayOnlineLivewire::class)->name('play-online');
 
-    Route::get('games-report', PlayOnlineLivewire::class)->name('games-report');
+    Route::get('games-report', GameSessionTableLivewire::class)->name('games-report');
 
     Route::get('request-accepted/{gameSessionId}', TwoUserGamePlay::class)->name('request-accpeted');
 });
