@@ -14,13 +14,101 @@
             pointer-events: none;
             opacity: 0.5;
         }
+
+        /* Custom sidebar gradient background */
+        .sidebar-gradient {
+            background: linear-gradient(180deg, 
+                rgba(0, 0, 0, 1) 0%, 
+                rgba(127, 29, 29, 0.15) 25%,
+                rgba(185, 28, 28, 0.1) 50%,
+                rgba(127, 29, 29, 0.15) 75%,
+                rgba(0, 0, 0, 1) 100%
+            );
+            position: relative;
+        }
+
+        .sidebar-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Global text color theme */
+        body {
+            color: #e5e7eb; /* Light gray for better readability */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff; /* White for headings */
+        }
+
+        p, span, div, label {
+            color: #d1d5db; /* Slightly lighter gray for regular text */
+        }
+
+        a {
+            color: #fca5a5; /* Light red for links */
+        }
+
+        a:hover {
+            color: #ef4444; /* Brighter red on hover */
+        }
+
+        /* Input and form element text colors */
+        input, textarea, select {
+            color: #ffffff;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #9ca3af; /* Medium gray for placeholders */
+        }
+
+        /* Button text colors */
+        button {
+            color: #ffffff;
+        }
+
+        /* Table text colors */
+        table, th, td {
+            color: #d1d5db;
+        }
+
+        /* Alert and notification text */
+        .text-muted, .text-secondary {
+            color: #9ca3af !important;
+        }
+
+        .text-primary {
+            color: #ef4444 !important; /* Red for primary text */
+        }
+
+        .text-success {
+            color: #fca5a5 !important; /* Light red instead of green */
+        }
+
+        .text-danger {
+            color: #dc2626 !important; /* Dark red for danger */
+        }
+
+        .text-warning {
+            color: #f87171 !important; /* Red-orange for warnings */
+        }
+
+        .text-info {
+            color: #fca5a5 !important; /* Light red for info */
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+<body class="min-h-screen bg-black dark:bg-black">
+    <flux:sidebar sticky stashable class="sidebar-gradient border-e border-red-900/50 dark:border-red-900/50">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
@@ -28,34 +116,21 @@
         </a>
 
         <flux:navlist variant="outline">
-            <flux:navlist.group :heading="__('Platform')" class="grid">
-                <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:navigate>
-                    {{ __('Dashboard') }}
-                </flux:navlist.item>
-                <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-game') }}" wire:navigate>
-                    {{ __('Play Game') }}
-                </flux:navlist.item>
-                <flux:navlist.item class="mt-3" icon="bolt" href="{{ route('play-online') }}" wire:navigate>
-                    {{ __('Play Online') }}
-                </flux:navlist.item>
-                <flux:navlist.item class="mt-3" icon="clipboard-document-check" href="{{ route('games-report') }}" wire:navigate>
-                    {{ __('Games Report') }}
-                </flux:navlist.item>
-            </flux:navlist.group>
+            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:navigate>
+                {{ __('Dashboard') }}
+            </flux:navlist.item>
+            <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-game') }}" wire:navigate>
+                {{ __('Play Game') }}
+            </flux:navlist.item>
+            <flux:navlist.item class="mt-3" icon="bolt" href="{{ route('play-online') }}" wire:navigate>
+                {{ __('Play Online') }}
+            </flux:navlist.item>
+            <flux:navlist.item class="mt-3" icon="clipboard-document-check" href="{{ route('games-report') }}" wire:navigate>
+                {{ __('Games Report') }}
+            </flux:navlist.item>
         </flux:navlist>
 
         <flux:spacer />
-
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
-                target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
-
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-            </flux:navlist.item>
-        </flux:navlist>
 
         <!-- Desktop User Menu -->
         <flux:dropdown position="bottom" align="start">
@@ -68,7 +143,7 @@
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                             <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
                                 <span
-                                    class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                    class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white dark:bg-red-900 dark:text-white">
                                     {{ auth()->user()->initials() }}
                                 </span>
                             </span>
@@ -115,7 +190,7 @@
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
                             <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
                                 <span
-                                    class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                    class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white dark:bg-red-900 dark:text-white">
                                     {{ auth()->user()->initials() }}
                                 </span>
                             </span>
