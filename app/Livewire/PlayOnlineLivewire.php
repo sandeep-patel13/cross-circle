@@ -24,7 +24,7 @@ class PlayOnlineLivewire extends Component
 
     public function mount()
     {
-        $this->defaultImage = Storage::disk('public')->url('images/user.png');
+        $this->defaultImage = Storage::disk('public')->url('images/gaming-avatar.jpg');
         $this->onlineUsers = OnlineUserTracker::onlineUsers();
     }
 

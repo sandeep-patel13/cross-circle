@@ -40,7 +40,7 @@
                 <tbody>
                     @foreach ($gameSessions as $gameSession)
                         <tr
-                            class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition duration-150 ease-in-out">
+                            class="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50 transition duration-150 ease-in-out">
 
                             @php
                                 // Determine Status
@@ -123,7 +123,7 @@
 
             <nav class="flex justify-center items-center space-x-1" aria-label="Table pagination">
                 <a href="#"
-                    class="flex items-center justify-center h-8 px-3 ml-0 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    class="flex items-center justify-center h-8 px-3 ml-0 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg bg-gray-100 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-700 dark:text-white">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
                             d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -134,9 +134,9 @@
                 <a href="#"
                     class="flex items-center justify-center text-sm font-medium text-primary-600 bg-primary-50 border border-primary-300 rounded-lg h-8 px-3 dark:bg-primary-900 dark:border-primary-700 dark:text-white">1</a>
                 <a href="#"
-                    class="flex items-center justify-center h-8 px-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    class="flex items-center justify-center h-8 px-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg bg-gray-100 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-700 dark:text-white">2</a>
                 <a href="#"
-                    class="flex items-center justify-center h-8 px-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    class="flex items-center justify-center h-8 px-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg bg-gray-100 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-700 dark:text-white">
                     Next
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"

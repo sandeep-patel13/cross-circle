@@ -51,7 +51,7 @@
                     <button id="{{ "{$x}-{$y}" }}"
                         class="symbol-buttons w-24 h-24 text-5xl font-extrabold rounded-xl 
                                bg-gray-900 border-2 border-cyan-500 text-cyan-400 
-                               hover:bg-cyan-500 hover:text-black hover:scale-105 
+                               bg-cyan-500 text-black scale-105 
                                transition-all duration-200 ease-in-out 
                                shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none
                                {{ strlen($gameSession->game_board[$x][$y]) > 0 ? 'pointer-events-none opacity-50' : '' }}"
