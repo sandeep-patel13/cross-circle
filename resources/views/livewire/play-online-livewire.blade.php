@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 shadow-2xl ">
+<div>
     @foreach ($onlineUsers as $onlineUser)
         <div class="max-w-sm rounded-lg overflow-hidden shadow-2xl relative 
                     bg-black/80 backdrop-blur-sm border border-red-500/30

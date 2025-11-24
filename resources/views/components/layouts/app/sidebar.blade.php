@@ -3,6 +3,7 @@
 
 <head>
     @include('partials.head')
+
     <style>
         button,
         input[type="radio"],
@@ -17,13 +18,12 @@
 
         /* Custom sidebar gradient background */
         .sidebar-gradient {
-            background: linear-gradient(180deg, 
-                rgba(0, 0, 0, 1) 0%, 
-                rgba(127, 29, 29, 0.15) 25%,
-                rgba(185, 28, 28, 0.1) 50%,
-                rgba(127, 29, 29, 0.15) 75%,
-                rgba(0, 0, 0, 1) 100%
-            );
+            background: linear-gradient(180deg,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(127, 29, 29, 0.15) 25%,
+                    rgba(185, 28, 28, 0.1) 50%,
+                    rgba(127, 29, 29, 0.15) 75%,
+                    rgba(0, 0, 0, 1) 100%);
             position: relative;
         }
 
@@ -40,190 +40,233 @@
 
         /* Global text color theme */
         body {
-            color: #e5e7eb; /* Light gray for better readability */
+            color: #e5e7eb;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            color: #ffffff; /* White for headings */
-        }
-
-        p, span, div, label {
-            color: #d1d5db; /* Slightly lighter gray for regular text */
-        }
-
-        a {
-            color: #fca5a5; /* Light red for links */
-        }
-
-        a:hover {
-            color: #ef4444; /* Brighter red on hover */
-        }
-
-        /* Input and form element text colors */
-        input, textarea, select {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             color: #ffffff;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #9ca3af; /* Medium gray for placeholders */
+        p,
+        span,
+        div,
+        label {
+            color: #d1d5db;
         }
 
-        /* Button text colors */
+        a {
+            color: #fca5a5;
+        }
+
+        a:hover {
+            color: #ef4444;
+        }
+
+        input,
+        textarea,
+        select {
+            color: #ffffff;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+
         button {
             color: #ffffff;
         }
 
-        /* Table text colors */
-        table, th, td {
+        table,
+        th,
+        td {
             color: #d1d5db;
         }
 
-        /* Alert and notification text */
-        .text-muted, .text-secondary {
+        .text-muted,
+        .text-secondary {
             color: #9ca3af !important;
         }
 
         .text-primary {
-            color: #ef4444 !important; /* Red for primary text */
+            color: #ef4444 !important;
         }
 
         .text-success {
-            color: #fca5a5 !important; /* Light red instead of green */
+            color: #fca5a5 !important;
         }
 
         .text-danger {
-            color: #dc2626 !important; /* Dark red for danger */
+            color: #dc2626 !important;
         }
 
         .text-warning {
-            color: #f87171 !important; /* Red-orange for warnings */
+            color: #f87171 !important;
         }
 
         .text-info {
-            color: #fca5a5 !important; /* Light red for info */
+            color: #fca5a5 !important;
         }
     </style>
+
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
 </head>
 
-<body class="min-h-screen bg-black dark:bg-black">
-    <flux:sidebar sticky stashable class="sidebar-gradient border-e border-red-900/50 dark:border-red-900/50">
-        <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+<body class="min-h-screen bg-black dark:bg-black p-4 bg-gradient-to-br from-black via-red-950 to-black">
 
-        <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-            <x-app-logo />
-        </a>
+    <!-- Background pattern -->
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+        <div class="absolute inset-0"
+            style="background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(220, 38, 38, 0.1) 2px, rgba(220, 38, 38, 0.1) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(220, 38, 38, 0.1) 2px, rgba(220, 38, 38, 0.1) 4px);
+                background-size: 50px 50px;">
+        </div>
+    </div>
 
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:navigate>
-                {{ __('Dashboard') }}
-            </flux:navlist.item>
-            <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-game') }}" wire:navigate>
-                {{ __('Play Game') }}
-            </flux:navlist.item>
-            <flux:navlist.item class="mt-3" icon="bolt" href="{{ route('play-online') }}" wire:navigate>
-                {{ __('Play Online') }}
-            </flux:navlist.item>
-            <flux:navlist.item class="mt-3" icon="clipboard-document-check" href="{{ route('games-report') }}" wire:navigate>
-                {{ __('Games Report') }}
-            </flux:navlist.item>
-        </flux:navlist>
+    <!-- Glowing orbs effect -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse">
+        </div>
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-red-800 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+            style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
+            style="animation-delay: 4s;"></div>
+    </div>
 
-        <flux:spacer />
+    <!-- FULL HEIGHT LAYOUT FIX -->
+    <div class="flex min-h-screen relative">
 
-        <!-- Desktop User Menu -->
-        <flux:dropdown position="bottom" align="start">
-            <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
-                icon-trailing="chevrons-up-down" />
+        <!-- SIDEBAR -->
+        <flux:sidebar sticky stashable class="sidebar-gradient border-e border-red-900/50 dark:border-red-900/50">
+            <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-            <flux:menu class="w-[220px]">
-                <flux:menu.radio.group>
-                    <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                <span
-                                    class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white dark:bg-red-900 dark:text-white">
-                                    {{ auth()->user()->initials() }}
+            <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
+                wire:navigate>
+                <x-app-logo />
+            </a>
+
+            <flux:navlist variant="outline">
+                <flux:navlist.item icon="home" href="{{ route('dashboard') }}" wire:navigate>
+                    {{ __('Dashboard') }}
+                </flux:navlist.item>
+                <flux:navlist.item class="mt-3" icon="puzzle-piece" href="{{ route('play-game') }}" wire:navigate>
+                    {{ __('Play Game') }}
+                </flux:navlist.item>
+                <flux:navlist.item class="mt-3" icon="bolt" href="{{ route('play-online') }}" wire:navigate>
+                    {{ __('Play Online') }}
+                </flux:navlist.item>
+                <flux:navlist.item class="mt-3" icon="clipboard-document-check" href="{{ route('games-report') }}"
+                    wire:navigate>
+                    {{ __('Games Report') }}
+                </flux:navlist.item>
+            </flux:navlist>
+
+            <flux:spacer />
+
+            <!-- Desktop User Menu -->
+            <flux:dropdown position="bottom" align="start">
+                <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
+                    icon-trailing="chevrons-up-down" />
+
+                <flux:menu class="w-[220px]">
+                    <flux:menu.radio.group>
+                        <div class="p-0 text-sm font-normal">
+                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                                    <span
+                                        class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white">
+                                        {{ auth()->user()->initials() }}
+                                    </span>
                                 </span>
-                            </span>
 
-                            <div class="grid flex-1 text-start text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                <div class="grid flex-1 text-start text-sm leading-tight">
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </flux:menu.radio.group>
+                    </flux:menu.radio.group>
 
-                <flux:menu.separator />
+                    <flux:menu.separator />
 
-                <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
-                    </flux:menu.item>
-                </flux:menu.radio.group>
+                    <flux:menu.radio.group>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                            {{ __('Settings') }}
+                        </flux:menu.item>
+                    </flux:menu.radio.group>
 
-                <flux:menu.separator />
+                    <flux:menu.separator />
 
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    </flux:sidebar>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                            class="w-full">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
+                </flux:menu>
+            </flux:dropdown>
+        </flux:sidebar>
 
-    <!-- Mobile User Menu -->
-    <flux:header class="lg:hidden">
-        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+        <!-- MOBILE HEADER -->
+        <flux:header class="lg:hidden absolute w-full">
+            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+            <flux:spacer />
 
-        <flux:spacer />
+            <flux:dropdown position="top" align="end">
+                <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
 
-        <flux:dropdown position="top" align="end">
-            <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
-
-            <flux:menu>
-                <flux:menu.radio.group>
-                    <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                <span
-                                    class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white dark:bg-red-900 dark:text-white">
-                                    {{ auth()->user()->initials() }}
+                <flux:menu>
+                    <flux:menu.radio.group>
+                        <div class="p-0 text-sm font-normal">
+                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                                    <span
+                                        class="flex h-full w-full items-center justify-center rounded-lg bg-red-900 text-white">
+                                        {{ auth()->user()->initials() }}
+                                    </span>
                                 </span>
-                            </span>
 
-                            <div class="grid flex-1 text-start text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                <div class="grid flex-1 text-start text-sm leading-tight">
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </flux:menu.radio.group>
+                    </flux:menu.radio.group>
 
-                <flux:menu.separator />
+                    <flux:menu.separator />
 
-                <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                        {{ __('Settings') }}
                     </flux:menu.item>
-                </flux:menu.radio.group>
 
-                <flux:menu.separator />
+                    <flux:menu.separator />
 
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    </flux:header>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                            class="w-full">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
+                </flux:menu>
+            </flux:dropdown>
+        </flux:header>
 
-    {{ $slot }}
+        {{ $slot }}
 
+    </div>
+
+    <!-- SCRIPTS -->
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('show-toast', (data) => {
@@ -249,7 +292,7 @@
                 .listen('.play-event', (e) => {
                     Swal.fire({
                         title: 'Game Invitation',
-                        text: `User ${e.fromUserName} challanged you to play!`,
+                        text: `User ${e.fromUserName} challenged you to play!`,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonText: 'Accept',
@@ -276,13 +319,7 @@
                         showConfirmButton: false,
                         timer: 3000,
                         timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer);
-                            toast.addEventListener('mouseleave', Swal.resumeTimer);
-                        },
-                    })
-                    .then(() => {
-                        console.log(e);
+                    }).then(() => {
                         window.location.href = "{{ url('request-accepted') }}/" + e.gameSession.id;
                     });
                 })
@@ -296,10 +333,6 @@
                         showConfirmButton: false,
                         timer: 3000,
                         timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer);
-                            toast.addEventListener('mouseleave', Swal.resumeTimer);
-                        },
                     });
                 });
         });
