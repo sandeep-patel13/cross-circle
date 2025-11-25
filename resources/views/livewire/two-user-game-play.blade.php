@@ -21,10 +21,7 @@
     <!-- Countdown Section -->
     <div id="countdownSection"
         class="w-64 mx-auto p-4 rounded-xl text-center font-bold 
-               bg-gradient-to-br from-gray-900 to-gray-800 
-               border-2 border-red-600 text-red-400
-               shadow-[0_0_15px_rgba(239,68,68,0.6)] 
-               drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]
+               bg-black/80 backdrop-blur-md border border-red-500/40 text-red-400
                {{ auth()->id() != $gameSession->current_user_turn_id ? 'opacity-50 pointer-events-none' : '' }}
                {{ $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-60 select-none' : '' }}"
         @if (auth()->id() == $gameSession->current_user_turn_id && !($this->gameSession->status == $this->gameSessionStatusEnum::Completed->value)) wire:poll.1000ms="decrementTimer" @endif>
@@ -35,25 +32,22 @@
     <!-- Game Board Section -->
     <div id="gameBoardSection" class="flex flex-col items-center justify-start min-h-screen mt-16 text-white">
         <h1
-            class="text-4xl font-extrabold mb-6 text-cyan-400 
-                   drop-shadow-[0_0_10px_rgba(6,182,212,0.8)] tracking-wider">
+            class="text-4xl font-extrabold mb-6 text-cyan-400 tracking-wider">
             ⚔️ TIC TAC TOE ⚔️
         </h1>
 
         <!-- Board -->
         <div
             class="grid grid-cols-3 gap-3 p-4 rounded-2xl 
-                   bg-gradient-to-br from-gray-800 to-gray-900 
+                   bg-black/80 backdrop-blur-md border border-red-500/40
                    shadow-[0_0_20px_rgba(6,182,212,0.3)]
                    {{ auth()->id() != $gameSession->current_user_turn_id || $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-50 pointer-events-none' : '' }}">
             @foreach ($gameBoard as $x => $row)
                 @foreach ($row as $y => $cell)
                     <button id="{{ "{$x}-{$y}" }}"
                         class="symbol-buttons w-24 h-24 text-5xl font-extrabold rounded-xl 
-                               bg-gray-900 border-2 border-cyan-500 text-cyan-400 
-                               bg-cyan-500 text-black scale-105 
-                               transition-all duration-200 ease-in-out 
-                               shadow-[0_0_10px_rgba(6,182,212,0.6)] focus:outline-none
+                               bg-black/80 backdrop-blur-md border border-red-500/40 text-cyan-400 text-black scale-105 
+                               transition-all duration-200 ease-in-out focus:outline-none
                                {{ strlen($gameSession->game_board[$x][$y]) > 0 ? 'pointer-events-none opacity-50' : '' }}"
                         wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}')">
                         {{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}
