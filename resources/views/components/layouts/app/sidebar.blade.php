@@ -112,6 +112,51 @@
         .text-info {
             color: #fca5a5 !important;
         }
+
+        /* GLOBAL SweetAlert2 custom theme */
+        .swal2-popup {
+            background: #000 !important;
+            /* Pure black background */
+            border: 2px solid #b91c1c !important;
+            /* Red border */
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.4) !important;
+            /* Red glow */
+            color: #e5e7eb !important;
+            /* Light gray text */
+            border-radius: 12px !important;
+        }
+
+        /* Title */
+        .swal2-title {
+            color: #ffffff !important;
+        }
+
+        /* Text */
+        .swal2-html-container {
+            color: #d1d5db !important;
+        }
+
+        /* Buttons */
+        .swal2-confirm {
+            background-color: #b91c1c !important;
+            border: 1px solid #dc2626 !important;
+            color: white !important;
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.5) !important;
+        }
+
+        .swal2-cancel {
+            background-color: #1f1f1f !important;
+            border: 1px solid #4b0000 !important;
+            color: #d1d5db !important;
+        }
+
+        /* Toast style */
+        .swal2-toast {
+            background: #000 !important;
+            border: 1px solid #b91c1c !important;
+            color: #e5e7eb !important;
+            box-shadow: 0 0 12px rgba(220, 38, 38, 0.4) !important;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
