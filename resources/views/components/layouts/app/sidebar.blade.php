@@ -118,7 +118,7 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body class="min-h-screen bg-black dark:bg-black p-4 bg-gradient-to-br from-black via-red-950 to-black">
+<body class="min-h-screen bg-black dark:bg-black bg-gradient-to-br from-black via-red-950 to-black">
 
     <!-- Background pattern -->
     <div class="absolute inset-0 opacity-20 pointer-events-none">
