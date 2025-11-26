@@ -23,7 +23,7 @@
 
             <div class="px-6 pt-4 pb-6 text-center">
                 <flux:button wire:click="sendGamePlayInvitation('{{ $onlineUser->id }}')" 
-                    class="cursor-pointer play-btn w-full bg-gradient-to-r from-red-600 to-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-2.5 transition-all duration-200"
+                    class="play-btn btn-dark-red 200"
                     variant="primary">
                     Challenge to Play
                 </flux:button>

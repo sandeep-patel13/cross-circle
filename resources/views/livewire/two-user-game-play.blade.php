@@ -45,9 +45,7 @@
             @foreach ($gameBoard as $x => $row)
                 @foreach ($row as $y => $cell)
                     <button id="{{ "{$x}-{$y}" }}"
-                        class="symbol-buttons w-24 h-24 text-5xl font-extrabold rounded-xl 
-                               bg-black/80 backdrop-blur-md border border-red-500/40 text-cyan-400 text-black scale-105 
-                               transition-all duration-200 ease-in-out focus:outline-none
+                        class="btn-dark-red
                                {{ strlen($gameSession->game_board[$x][$y]) > 0 ? 'pointer-events-none opacity-50' : '' }}"
                         wire:click="handleMove('{{ $x }}', '{{ $y }}', '{{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}')">
                         {{ strlen($gameSession->game_board[$x][$y]) > 0 ? $gameSession->game_board[$x][$y] : $cell }}
@@ -59,7 +57,7 @@
         <!-- Go Back Button -->
         @if ($this->gameSession->status == $this->gameSessionStatusEnum::Completed->value)
             <div class="mt-6 text-center">
-                <flux:button wire:click="goBack()" variant="primary">Go Back</flux:button>
+                <flux:button class="btn-dark-red" wire:click="goBack()" variant="primary">Go Back</flux:button>
             </div>
         @endif
     </div>

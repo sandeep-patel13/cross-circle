@@ -24,8 +24,5 @@
     @error('gameStarter')
         <span class="text-red-400 text-xs mb-3">{{ $message }}</span>
     @enderror
-    <button type="submit"
-        class="text-white bg-gradient-to-r from-red-600 to-red-800 from-red-700 to-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-2.5 transition-all duration-200 scale-105">
-        Let's Start Game
-    </button>
+    <button type="submit" class="btn-dark-red">Let's Start Game</button>
 </form>

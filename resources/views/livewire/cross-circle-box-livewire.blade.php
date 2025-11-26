@@ -35,11 +35,11 @@
                 <button type="button"
                     class="
                     {{ $xClasses }}
-                    focus:outline-none text-white bg-red-700 bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:bg-red-700 dark:focus:ring-red-900"
+                     btn-x me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }}, 'X')">X
                 </button>
                 <button type="button"
-                    class="{{ $oClasses }} focus:outline-none text-white bg-gray-700 bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-600 dark:bg-gray-700 dark:focus:ring-gray-800 "
+                    class="{{ $oClasses }} btn-o me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }}, 'O')">O
                 </button>
                 @php
@@ -64,13 +64,13 @@
                 @endphp
 
                 <button type="button"
-                    class="{{ $xClasses }} focus:outline-none text-white bg-red-700 bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:bg-red-700 dark:focus:ring-red-900"
+                    class="{{ $xClasses }}  btn-x me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }}, 'X')">
                     X
                 </button>
 
                 <button type="button"
-                    class="{{ $oClasses }} focus:outline-none text-white bg-gray-700 bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-600 dark:bg-gray-700 dark:focus:ring-gray-800 "
+                    class="{{ $oClasses }}  btn-o  me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }}, 'O')">O
                 </button>
                 @php
@@ -96,12 +96,12 @@
 
 
                 <button type="button"
-                    class="{{ $xClasses }} focus:outline-none text-white bg-red-700 bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:bg-red-700 dark:focus:ring-red-900"
+                    class="{{ $xClasses }}  btn-x me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }}, 'X')">X
                 </button>
 
                 <button type="button"
-                    class="{{ $oClasses }} focus:outline-none text-white bg-gray-700 bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-600 dark:bg-gray-700 dark:focus:ring-gray-800 "
+                    class="{{ $oClasses }}  btn-o  me-2 mb-2 "
                     wire:click="handleClick({{ $row }}, {{ $col }} , 'O')">O
                 </button>
                 @php
@@ -120,7 +120,7 @@
 
     @if ($endGame)
         <div class="flex justify-center items-center" style="margin-top: 15px;">
-            <flux:button size="sm" variant="primary" onclick="goBack()">Go Back</flux:button>
+            <flux:button class="btn-dark-red" size="sm" variant="primary" onclick="goBack()">Go Back</flux:button>
         </div>
     @endif
 </div>
