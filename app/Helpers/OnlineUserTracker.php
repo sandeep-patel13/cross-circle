@@ -15,14 +15,13 @@ class OnlineUserTracker
     {
         $onlineUsers = Cache::get(self::$key, []);
         $onlineUsers[$userId] = now();
-        Cache::forever(self::$key, $onlineUsers);
+        Cache::put(self::$key, $onlineUsers , now()->addMinutes(5));
     }
      
     public static function remove($userId)
     {
         $onlineUsers = Cache::get(self::$key, []);
         unset($onlineUsers[$userId]);
-        Cache::forever(self::$key, $onlineUsers);
     }
 
     public static function onlineUsers()

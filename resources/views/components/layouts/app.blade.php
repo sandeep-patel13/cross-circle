@@ -1,5 +1,9 @@
+@props([
+    'fluxMainClasses' => ''
+])
+
 <x-layouts.app.sidebar :title="$title ?? null">
-    <flux:main class="flex items-center justify-center">
+    <flux:main class="{{ $fluxMainClasses }}">
         {{ $slot }}
     </flux:main>
 

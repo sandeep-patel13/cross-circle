@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Dashboard')">
+<x-layouts.app :title="__('Dashboard')" fluxMainClasses="flex items-center justify-center">
 
     <livewire:cross-circle-master-livewire />
 
