@@ -37,11 +37,18 @@
         </h1>
 
         <!-- Board -->
-        <div
-            class="grid grid-cols-3 gap-3 p-4 rounded-2xl 
-                   bg-black/80 backdrop-blur-md border border-red-500/40
-                   shadow-[0_0_20px_rgba(6,182,212,0.3)]
-                   {{ auth()->id() != $gameSession->current_user_turn_id || $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-50 pointer-events-none' : '' }}">
+         <div
+    class="
+        grid grid-cols-3 gap-3 p-4 rounded-2xl
+        bg-black/80 backdrop-blur-md border border-red-500/40
+        shadow-[0_0_20px_rgba(6,182,212,0.3)]
+
+        w-[90vw] max-w-[420px]
+        aspect-square
+        mx-auto
+
+        {{ auth()->id() != $gameSession->current_user_turn_id || $this->gameSession->status == $this->gameSessionStatusEnum::Completed->value ? 'opacity-50 pointer-events-none' : '' }}
+    ">
             @foreach ($gameBoard as $x => $row)
                 @foreach ($row as $y => $cell)
                     <button id="{{ "{$x}-{$y}" }}"

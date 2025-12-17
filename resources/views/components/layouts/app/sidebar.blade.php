@@ -335,6 +335,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             Echo.private("invite.{{ auth()->user()->id }}")
                 .listen('.play-event', (e) => {
+                    console.log("Hello");
                     Swal.fire({
                         title: 'Game Invitation',
                         text: `User ${e.fromUserName} challenged you to play!`,
