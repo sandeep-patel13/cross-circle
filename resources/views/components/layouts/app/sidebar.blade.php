@@ -313,29 +313,17 @@
 
     <!-- SCRIPTS -->
     <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('show-toast', (data) => {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    title: 'Success!',
-                    text: data.message,
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer);
-                        toast.addEventListener('mouseleave', Swal.resumeTimer);
-                    },
-                });
-            });
-        });
+        function attachInviteEcho() {
 
-        document.addEventListener('DOMContentLoaded', () => {
-            Echo.private("invite.{{ auth()->user()->id }}")
+            // Remove old subscription if exists
+            if (window.inviteEchoChannel) {
+                Echo.leave(`private-invite-{{ auth()->id() }}`);
+            }
+
+            window.inviteEchoChannel = Echo.private("invite.{{ auth()->id() }}")
                 .listen('.play-event', (e) => {
-                    console.log("Hello");
+                    console.log("Invitation received");
+
                     Swal.fire({
                         title: 'Game Invitation',
                         text: `User ${e.fromUserName} challenged you to play!`,
@@ -364,9 +352,9 @@
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 3000,
-                        timerProgressBar: true,
                     }).then(() => {
-                        window.location.href = "{{ url('request-accepted') }}/" + e.gameSession.id;
+                        window.location.href =
+                            "{{ url('request-accepted') }}/" + e.gameSession.id;
                     });
                 })
                 .listen('.invitation-rejected', (e) => {
@@ -378,10 +366,15 @@
                         icon: 'warning',
                         showConfirmButton: false,
                         timer: 3000,
-                        timerProgressBar: true,
                     });
                 });
-        });
+        }
+
+        // 🔹 First load
+        document.addEventListener('livewire:init', attachInviteEcho);
+
+        // 🔹 Every SPA navigation
+        document.addEventListener('livewire:navigated', attachInviteEcho);
     </script>
 
     @fluxScripts

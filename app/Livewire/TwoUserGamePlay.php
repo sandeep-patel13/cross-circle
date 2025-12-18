@@ -21,7 +21,7 @@ class TwoUserGamePlay extends Component
 
     public $userSymbol;
 
-    public $timer = 5000000;
+    public $timer = 60;
 
     public $movedCells;
 
