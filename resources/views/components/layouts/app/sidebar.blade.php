@@ -312,18 +312,30 @@
     </div>
 
     <!-- SCRIPTS -->
-    <script>
-        function attachInviteEcho() {
+    {{-- <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-toast', (data) => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    title: 'Success!',
+                    text: data.message,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer);
+                        toast.addEventListener('mouseleave', Swal.resumeTimer);
+                    },
+                });
+            });
+        });
 
-            // Remove old subscription if exists
-            if (window.inviteEchoChannel) {
-                Echo.leave(`private-invite-{{ auth()->id() }}`);
-            }
-
-            window.inviteEchoChannel = Echo.private("invite.{{ auth()->id() }}")
+        document.addEventListener('DOMContentLoaded', () => {
+            Echo.private("invite.{{ auth()->user()->id }}")
                 .listen('.play-event', (e) => {
-                    console.log("Invitation received");
-
+                    console.log("Hello");
                     Swal.fire({
                         title: 'Game Invitation',
                         text: `User ${e.fromUserName} challenged you to play!`,
@@ -352,9 +364,9 @@
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 3000,
+                        timerProgressBar: true,
                     }).then(() => {
-                        window.location.href =
-                            "{{ url('request-accepted') }}/" + e.gameSession.id;
+                        window.location.href = "{{ url('request-accepted') }}/" + e.gameSession.id;
                     });
                 })
                 .listen('.invitation-rejected', (e) => {
@@ -366,16 +378,108 @@
                         icon: 'warning',
                         showConfirmButton: false,
                         timer: 3000,
+                        timerProgressBar: true,
                     });
                 });
+        });
+    </script> --}}
+
+<script>
+    function attachInviteEchoListeners() {
+
+        if (window.inviteEchoAttached) return;
+        window.inviteEchoAttached = true;
+
+        Echo.private("invite.{{ auth()->user()->id }}")
+            .listen('.play-event', (e) => {
+                console.log('Play event received', e);
+
+                Swal.fire({
+                    title: 'Game Invitation',
+                    text: `User ${e.fromUserName} challenged you to play!`,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Accept',
+                    cancelButtonText: 'Decline'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('game-play-invitation-accepted', {
+                            gameSessionId: e.gameSession.id
+                        });
+                    } else {
+                        Livewire.dispatch('game-play-invitation-rejected', {
+                            gameSessionId: e.gameSession.id
+                        });
+                    }
+                });
+            })
+
+            .listen('.invitation-accepted', (e) => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    title: 'Invitation Accepted!',
+                    text: `User ${e.gameSession.invitee.name} accepted your invitation!`,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    window.location.href =
+                        "{{ url('request-accepted') }}/" + e.gameSession.id;
+                });
+            })
+
+            .listen('.invitation-rejected', (e) => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    title: 'Invitation Rejected!',
+                    text: `User ${e.invitee_name} rejected your invitation!`,
+                    icon: 'warning',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            });
+    }
+
+    document.addEventListener('livewire:init', () => {
+
+        // Toast listener (unchanged logic)
+        if (!window.showToastAttached) {
+            window.showToastAttached = true;
+
+            Livewire.on('show-toast', (data) => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    title: 'Success!',
+                    text: data.message,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            });
         }
 
-        // 🔹 First load
-        document.addEventListener('livewire:init', attachInviteEcho);
+        // Wait for Echo to be READY
+        const waitForEcho = setInterval(() => {
+            if (
+                window.Echo &&
+                Echo.connector &&
+                Echo.connector.pusher &&
+                Echo.connector.pusher.connection.state === 'connected'
+            ) {
+                clearInterval(waitForEcho);
+                attachInviteEchoListeners();
+            }
+        }, 100);
+    });
+</script>
 
-        // 🔹 Every SPA navigation
-        document.addEventListener('livewire:navigated', attachInviteEcho);
-    </script>
+
 
     @fluxScripts
 </body>
